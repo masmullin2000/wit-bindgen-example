@@ -1,0 +1,11 @@
+[package]
+name = "guest"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+#wit-bindgen-rust = { path = "../../wit-bindgen/crates/rust-wasm" }
+wit-bindgen-rust = { git = "https://github.com/bytecodealliance/wit-bindgen" }

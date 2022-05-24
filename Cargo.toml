@@ -1,0 +1,3 @@
+[workspace]
+members = [ "host", "guest", "guest2" ]
+

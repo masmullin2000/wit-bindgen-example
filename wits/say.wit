@@ -1,0 +1,3 @@
+hello: function(name: string) -> string
+
+overhead: function(name: string) -> tuple<string, u64>
