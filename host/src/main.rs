@@ -17,9 +17,22 @@ fn main() {
         "./target/wasm32-wasi/debug/guest2.wasm"
     };
 
+    println!("\n\n\n\n\n");
+    println!("Running from the guest wasm");
     run(path, "Michael");
+    run(path, "Douglas");
+
+    println!("");
+    println!("Running from the unhospitable guest wasm (guest2)");
+    run(path2, "Michael");
     run(path2, "Douglas");
-    timeit(path, "Michael", 10_000_000);
+
+    #[cfg(not(debug_assertions))]
+    {
+        println!("\n\n\n\n\n");
+        println!("Lets do some poor-man's benchmarks");
+        timeit(path, "Michael", 10_000_000);
+    }
 }
 
 fn run(path: &str, name: &str) {
@@ -38,8 +51,8 @@ fn run(path: &str, name: &str) {
 
     if let Ok((exports, mut store)) = funcs {
         match exports.hello(&mut store, name) {
-            Ok(reply) => println!("reply {}", reply),
-            Err(e) => println!("blarg {}", e),
+            Ok(reply) => println!("{}", reply),
+            Err(e) => println!("Error: {}", e),
         }
     } else {
         println!("no instantiate");
@@ -87,22 +100,22 @@ fn timeit(path: &str, name: &str, amt: u128) {
 
         println!("");
         println!(
-            "it took {} to run wasm -- {} nanos per iteration",
+            "{:>13}ns to run wasm   -- {:>6} nanos per iteration",
             wasm_time,
             wasm_time / amt
         );
         println!(
-            "it took {} inside wasm -- {} nanos per iteration",
-            wasm_time_count,
-            wasm_time_count / amt
-        );
-        println!(
-            "it took {} to run native -- {} nanos per iteration",
+            "{:>13}ns to run native -- {:>6} nanos per iteration",
             native_time,
             native_time / amt
         );
         println!(
-            "it took {} inside native -- {} nanos per iteration",
+            "{:>13}ns inside wasm   -- {:>6} nanos per iteration",
+            wasm_time_count,
+            wasm_time_count / amt
+        );
+        println!(
+            "{:>13}ns inside native -- {:>6} nanos per iteration",
             native_time_count,
             native_time_count / amt
         );

@@ -5,9 +5,9 @@ struct Say;
 impl say::Say for Say {
     fn hello(name: String) -> String {
         let rc = if name != "Michael" {
-            format!("goodbye {}", name)
+            format!("I don't know you! {}", name)
         } else {
-            format!("hello {}", name)
+            format!("Hello good sir {}", name)
         };
 
         rc
